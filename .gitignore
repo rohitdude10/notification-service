@@ -1,0 +1,63 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+
+# Environment variables
+.env
+*.env
+
+# Logs and databases
+logs/
+*.log
+db.sqlite3
+instance/
+
+# # Flask settings
+# config.py
+config/*.pyc
+
+# Pytest
+.coverage
+.cache/
+
+# IDE files
+.vscode/
+*.iml
+.idea/
+
+# Docker
+*.dockerignore
+
+# Node modules (if using frontend)
+node_modules/
+
+# Compiled files
+*.so
+*.o
+*.a
+*.pyc
+
+# Backup files
+*.bak
+*.swp
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# AWS and deployment files
+*.pem
+.terraform/
+.envrc
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Migrations
+migrations/
