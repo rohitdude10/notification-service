@@ -136,6 +136,47 @@ def send_project_inquiry(recipient_email, sender_name, sender_email, subject, me
     print("mail has been send" , result)
     return result
 
+def send_custom_email(recipient_email, subject, html_content, text_content=None):
+    """
+    Send a custom email notification with HTML content.
+    
+    Args:
+        recipient_email (str): Email address of the recipient
+        subject (str): Subject of the email
+        html_content (str): HTML content of the email
+        text_content (str, optional): Plain text version of the email. If not provided,
+                                     a simple message will be used as fallback.
+    
+    Returns:
+        Response from the email API
+    """
+    if text_content is None:
+        text_content = "This email contains HTML content. Please use an email client that supports HTML to view it properly."
+    
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": sender_email,
+                    "Name": "Birthday Buddy"
+                },
+                "To": [
+                    {
+                        "Email": recipient_email,
+                        "Name": "Recipient"
+                    }
+                ],
+                "Subject": subject,
+                "TextPart": text_content,
+                "HTMLPart": html_content
+            }
+        ]
+    }
+    
+    result = mailjet.send.create(data=data)
+    
+    return result
+
 # Example usage
 if __name__ == "__main__":
     # Test the email function

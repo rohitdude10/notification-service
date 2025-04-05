@@ -4,7 +4,7 @@ API for the price notification service
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from notification_service import send_price_alert, send_project_inquiry
+from notification_service import send_price_alert, send_project_inquiry, send_custom_email
 from config import config
 
 # Initialize Flask app
@@ -98,6 +98,47 @@ def send_inquiry_notification():
             return jsonify({
                 "success": False,
                 "message": "Failed to send project inquiry notification",
+                "response": result.json()
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error: {str(e)}"
+        }), 500
+
+@app.route('/api/v1/send-custom-email', methods=['POST', 'OPTIONS'])
+def send_custom_notification():
+    """Send custom email notification endpoint."""
+    if request.method == 'OPTIONS':
+        return '', 204
+        
+    data = request.json
+    
+    # Validate request data
+    required_fields = ['email', 'subject', 'html_content']
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Missing required field: {field}"}), 400
+    
+    try:
+        result = send_custom_email(
+            recipient_email=data['email'],
+            subject=data['subject'],
+            html_content=data['html_content'],
+            text_content=data.get('text_content')
+        )
+        
+        if result.status_code == 200:
+            return jsonify({
+                "success": True,
+                "message": f"Custom email notification sent to {data['email']}",
+                "response": result.json()
+            }), 200
+        else:
+            return jsonify({
+                "success": False,
+                "message": "Failed to send custom email notification",
                 "response": result.json()
             }), 500
             
